@@ -25,9 +25,11 @@
                 deepLinking: true,
                 presets: [
                     SwaggerUIBundle.presets.apis,
-                    SwaggerUIBundle.SwaggerUIStandalonePreset
+                    SwaggerUIBundle.presets.standalone
                 ],
-                layout: "StandaloneLayout",
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
                 tryItOutEnabled: true,
                 supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch']
             });
