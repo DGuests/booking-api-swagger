@@ -8,9 +8,43 @@
         .swagger-ui .topbar {
             display: none;
         }
+        .api-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .api-info h1 {
+            margin: 0 0 10px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 2em;
+        }
+        .api-url {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .api-description {
+            margin-top: 10px;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
+    <div class="api-info">
+        <h1>📚 API DGuests - Documentação</h1>
+        <div class="api-url">🌐 https://dguests-api.com/bookingApi</div>
+        <div class="api-description">Base URL para todos os endpoints da API</div>
+    </div>
     <div id="swagger-ui"></div>
     <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
     <script>
