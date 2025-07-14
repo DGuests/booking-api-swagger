@@ -4,13 +4,17 @@
     "title": "API DGuests",
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "https://dguests-api.com/bookingApi",
+      "description": "API DGuests - Servidor de Produção"
+    }
+  ],
   "paths": {
     "/createBooking": {
       "post": {
         "summary": "Cria uma nova reserva para um evento.",
-        "tags": [
-          "Booking"
-        ],
+        "tags": ["Booking"],
         "requestBody": {
           "required": true,
           "content": {
@@ -127,9 +131,7 @@
     "/createSpecificBooking": {
       "post": {
         "summary": "Cria uma nova reserva específica para um evento, mesa ou ambiente.",
-        "tags": [
-          "Booking"
-        ],
+        "tags": ["Booking"],
         "requestBody": {
           "required": true,
           "content": {
@@ -246,9 +248,7 @@
     "/getAllAvailabilities": {
       "get": {
         "summary": "Retorna todas as disponibilidades de eventos",
-        "tags": [
-          "Info"
-        ],
+        "tags": ["Info"],
         "parameters": [
           {
             "in": "query",
@@ -339,9 +339,7 @@
     "/getEventInformation": {
       "get": {
         "summary": "Retorna informações detalhadas de eventos",
-        "tags": [
-          "Info"
-        ],
+        "tags": ["Info"],
         "parameters": [
           {
             "in": "query",
@@ -430,9 +428,7 @@
     "/getQueueAvailability": {
       "get": {
         "summary": "Retorna a disponibilidade da fila de espera",
-        "tags": [
-          "Queue"
-        ],
+        "tags": ["Queue"],
         "parameters": [
           {
             "in": "query",
@@ -559,9 +555,7 @@
     "/getReservation": {
       "get": {
         "summary": "Retorna as reservas de um evento em uma data específica",
-        "tags": [
-          "Booking"
-        ],
+        "tags": ["Booking"],
         "parameters": [
           {
             "in": "query",
@@ -774,9 +768,7 @@
     "/getSpins": {
       "get": {
         "summary": "Lista os giros (spins) disponíveis para o usuário autenticado",
-        "tags": [
-          "Spins"
-        ],
+        "tags": ["Spins"],
         "parameters": [
           {
             "in": "query",
@@ -816,10 +808,7 @@
             "name": "ativo",
             "schema": {
               "type": "integer",
-              "enum": [
-                0,
-                1
-              ]
+              "enum": [0, 1]
             },
             "description": "Se o giro está ativo (1=ativo, 0=inativo)"
           },
@@ -917,9 +906,7 @@
     "/getSpinSetting": {
       "get": {
         "summary": "Retorna as configurações do giro (ambiente ou cenário)",
-        "tags": [
-          "Spins"
-        ],
+        "tags": ["Spins"],
         "parameters": [
           {
             "in": "query",
@@ -1076,9 +1063,7 @@
     "/getUser": {
       "get": {
         "summary": "Retorna os dados do usuário",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "responses": {
           "200": {
             "description": "Dados do usuário",
@@ -1175,9 +1160,7 @@
     "/getWaitQueueConfig": {
       "get": {
         "summary": "Retorna as configurações da fila de espera",
-        "tags": [
-          "Queue"
-        ],
+        "tags": ["Queue"],
         "parameters": [
           {
             "in": "query",
@@ -1315,11 +1298,7 @@
                     "usar_ambientes": true,
                     "max_pessoas": 20,
                     "max_pessoas_mesa": 5,
-                    "dias_semana": [
-                      2,
-                      4,
-                      6
-                    ],
+                    "dias_semana": [2, 4, 6],
                     "horarios": [
                       {
                         "max": "19:00",
@@ -1399,12 +1378,7 @@
     "schemas": {
       "CreateBookingBody": {
         "type": "object",
-        "required": [
-          "data",
-          "nome",
-          "reservaEmail",
-          "qtd"
-        ],
+        "required": ["data", "nome", "reservaEmail", "qtd"],
         "properties": {
           "data": {
             "type": "string",
@@ -1527,10 +1501,7 @@
           },
           "tipo": {
             "type": "string",
-            "enum": [
-              "cenario",
-              "ambiente"
-            ],
+            "enum": ["cenario", "ambiente"],
             "example": "cenario",
             "description": "Tipo da reserva."
           },
@@ -1674,10 +1645,7 @@
           },
           "tipoAmbiente": {
             "type": "string",
-            "enum": [
-              "cenario",
-              "ambiente"
-            ]
+            "enum": ["cenario", "ambiente"]
           },
           "qtdDisponivel": {
             "type": "integer",
@@ -2085,9 +2053,7 @@
         "properties": {
           "tipo": {
             "type": "string",
-            "enum": [
-              "ambiente"
-            ]
+            "enum": ["ambiente"]
           },
           "ambiente": {
             "$ref": "#/components/schemas/Ambiente"
@@ -2099,9 +2065,7 @@
         "properties": {
           "tipo": {
             "type": "string",
-            "enum": [
-              "cenario"
-            ]
+            "enum": ["cenario"]
           },
           "cenario": {
             "type": "array",
