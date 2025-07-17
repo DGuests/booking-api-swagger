@@ -128,6 +128,90 @@
         ]
       }
     },
+    "/login": {
+      "post": {
+        "summary": "Autentica um usuário e retorna o token JWT",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                },
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                  "user": {
+                    "id": 1,
+                    "nome": "João Silva",
+                    "email": "joao@email.com"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email ou senha inválidos"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Dados de entrada inválidos ou campos obrigatórios ausentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Campo obrigatório ausente: email"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno desconhecido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal Server Error!!!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/createSpecificBooking": {
       "post": {
         "summary": "Cria uma nova reserva específica para um evento, mesa ou ambiente.",
@@ -1376,6 +1460,50 @@
   },
   "components": {
     "schemas": {
+      "LoginBody": {
+        "type": "object",
+        "required": ["email", "senha"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "usuario@email.com",
+            "description": "E-mail do usuário para autenticação."
+          },
+          "senha": {
+            "type": "string",
+            "example": "minhasenha123",
+            "description": "Senha do usuário para autenticação."
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "description": "Token JWT para autenticação nas próximas requisições."
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "nome": {
+                "type": "string",
+                "example": "João Silva"
+              },
+              "email": {
+                "type": "string",
+                "example": "joao@email.com"
+              }
+            }
+          }
+        }
+      },
       "CreateBookingBody": {
         "type": "object",
         "required": ["data", "nome", "reservaEmail", "qtd"],
