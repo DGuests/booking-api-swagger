@@ -1660,12 +1660,12 @@
           "userId": {
             "type": "integer",
             "example": 1,
-            "description": "ID of the desired rotation (shift)."
+            "description": "Restaurant ID."
           },
           "spinId": {
             "type": "integer",
             "example": 1,
-            "description": "Restaurant ID."
+            "description": "ID of the desired rotation (shift)."
           },
           "eventId": {
             "type": "integer",
