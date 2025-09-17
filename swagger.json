@@ -27,7 +27,7 @@
         },
         "responses": {
           "200": {
-            "description": "Reserva criada com sucesso",
+            "description": "Reservation created successfully.",
             "content": {
               "application/json": {
                 "schema": {
@@ -98,7 +98,7 @@
             }
           },
           "500": {
-            "description": "Erro interno desconhecido",
+            "description": "Unknown internal error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -194,7 +194,7 @@
             }
           },
           "500": {
-            "description": "Erro interno desconhecido",
+            "description": "Unknown internal error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -214,7 +214,7 @@
     },
     "/createSpecificBooking": {
       "post": {
-        "summary": "Cria uma nova reserva específica para um evento, mesa ou ambiente.",
+        "summary": "Creates a new specific reservation for an event, table, or space.",
         "tags": ["Booking"],
         "requestBody": {
           "required": true,
@@ -228,22 +228,24 @@
         },
         "responses": {
           "200": {
-            "description": "Reserva criada com sucesso",
+            "description": "Reservation created successfully.",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CreateSpecificBookingResponse"
                 },
                 "example": {
-                  "reservaAtiva": true,
+                  "active": true,
                   "id": 5,
-                  "reservaHora": "19:00:00",
-                  "nome": "Chris",
-                  "reservaEmail": "chris@teste.com",
-                  "telefone": "+5511999999999",
-                  "reservaMesa": 10,
-                  "reservaAmbiente": 5,
-                  "reservaQtdPessoas": 7,
+                  "eventId": 6,
+                  "reservationTime": "19:00:00",
+                  "name": "Chris",
+                  "email": "chris@teste.com",
+                  "phone": 5511999999999,
+                  "schedule": 7,
+                  "table": 10,
+                  "environment": null,
+                  "peopleCount": 7,
                   "updatedAt": "2025-07-07T19:10:23.718Z",
                   "createdAt": "2025-07-07T19:10:23.718Z"
                 }
@@ -251,7 +253,7 @@
             }
           },
           "404": {
-            "description": "Evento, giro, mesa ou ambiente não encontrado",
+            "description": "Event, rotation, table, or space not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -259,7 +261,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Nenhum evento encontrado"
+                      "example": "No events found."
                     }
                   }
                 }
@@ -267,7 +269,7 @@
             }
           },
           "409": {
-            "description": "Conflito de reserva ou ambiente indisponível",
+            "description": "Reservation conflict or unavailable space.",
             "content": {
               "application/json": {
                 "schema": {
@@ -275,7 +277,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Reserva indisponível, mesa já reservada"
+                      "example": "Reservation unavailable, table already booked."
                     }
                   }
                 }
@@ -283,7 +285,7 @@
             }
           },
           "422": {
-            "description": "Dados de entrada inválidos ou campos obrigatórios ausentes",
+            "description": "Invalid input data or missing required fields.",
             "content": {
               "application/json": {
                 "schema": {
@@ -291,7 +293,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Campo obrigatório ausente: nome"
+                      "example": "Missing required field: name."
                     }
                   }
                 }
@@ -299,7 +301,7 @@
             }
           },
           "500": {
-            "description": "Erro interno desconhecido",
+            "description": "Unknown internal error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -324,14 +326,14 @@
               "type": "string",
               "example": "Bearer <token>"
             },
-            "description": "Token JWT de autenticação no formato Bearer"
+            "description": "Authentication JWT token in Bearer format."
           }
         ]
       }
     },
     "/getAllAvailabilities": {
       "get": {
-        "summary": "Retorna todas as disponibilidades de eventos",
+        "summary": "Returns all event availabilities.",
         "tags": ["Info"],
         "parameters": [
           {
@@ -342,7 +344,7 @@
               "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
               "example": "2025-06-09"
             },
-            "description": "Data no formato 'YYYY-MM-DD'."
+            "description": "Date in 'YYYY-MM-DD' format."
           },
           {
             "in": "query",
@@ -350,7 +352,7 @@
             "schema": {
               "type": "integer"
             },
-            "description": "Número de itens por página. Valor Padrão 10"
+            "description": "Number of items per page. Default value: 10."
           },
           {
             "in": "query",
@@ -358,7 +360,7 @@
             "schema": {
               "type": "integer"
             },
-            "description": "Número da página. Valor Padrão 0"
+            "description": "Page number. Default value. 0"
           },
           {
             "in": "header",
@@ -368,12 +370,12 @@
               "type": "string",
               "example": "Bearer <token>"
             },
-            "description": "Token JWT de autenticação no formato Bearer"
+            "description": "Authentication JWT token in Bearer format."
           }
         ],
         "responses": {
           "200": {
-            "description": "Lista de disponibilidades",
+            "description": "List of availabilities.",
             "content": {
               "application/json": {
                 "schema": {
@@ -386,7 +388,7 @@
             }
           },
           "400": {
-            "description": "Parâmetro data_especifica inválido",
+            "description": "Invalid data_especifica parameter.",
             "content": {
               "application/json": {
                 "schema": {
@@ -402,7 +404,7 @@
             }
           },
           "500": {
-            "description": "Erro interno desconhecido",
+            "description": "Unknown internal error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -422,7 +424,7 @@
     },
     "/getEventInformation": {
       "get": {
-        "summary": "Retorna informações detalhadas de eventos",
+        "summary": "Returns detailed event information.",
         "tags": ["Info"],
         "parameters": [
           {
@@ -433,7 +435,7 @@
               "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
               "example": "2025-06-09"
             },
-            "description": "Data no formato 'YYYY-MM-DD'."
+            "description": "Date in 'YYYY-MM-DD' format."
           },
           {
             "in": "query",
@@ -441,7 +443,7 @@
             "schema": {
               "type": "integer"
             },
-            "description": "Número de itens por página. Padrão 10"
+            "description": "Number of items per page. Default value: 10."
           },
           {
             "in": "query",
@@ -449,7 +451,7 @@
             "schema": {
               "type": "integer"
             },
-            "description": "Número da página. Padrão 0"
+            "description": "Page number. Default value 0"
           },
           {
             "in": "header",
@@ -459,12 +461,12 @@
               "type": "string",
               "example": "Bearer <token>"
             },
-            "description": "Token JWT de autenticação no formato Bearer"
+            "description": "Authentication JWT token in Bearer format."
           }
         ],
         "responses": {
           "200": {
-            "description": "Lista de eventos detalhados",
+            "description": "List of detailed events.",
             "content": {
               "application/json": {
                 "schema": {
@@ -477,7 +479,7 @@
             }
           },
           "400": {
-            "description": "Parâmetro data_especifica inválido",
+            "description": "Invalid data_especifica parameter.",
             "content": {
               "application/json": {
                 "schema": {
@@ -492,7 +494,7 @@
             }
           },
           "500": {
-            "description": "Erro interno desconhecido",
+            "description": "Unknown internal error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -542,7 +544,7 @@
               "type": "string",
               "example": "Bearer <token>"
             },
-            "description": "Token JWT de autenticação no formato Bearer"
+            "description": "Authentication JWT token in Bearer format."
           }
         ],
         "responses": {
@@ -616,7 +618,7 @@
             }
           },
           "500": {
-            "description": "Erro interno desconhecido",
+            "description": "Unknown internal error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -666,7 +668,7 @@
             "schema": {
               "type": "integer"
             },
-            "description": "Número da página. Valor Padrão 0"
+            "description": "Page number. Default value 0"
           },
           {
             "in": "query",
@@ -675,7 +677,7 @@
               "type": "integer",
               "example": 2
             },
-            "description": "Quantidade mínima de pessoas na reserva"
+            "description": "Minimum number of people for the reservation."
           },
           {
             "in": "query",
@@ -684,7 +686,7 @@
               "type": "integer",
               "example": 10
             },
-            "description": "Quantidade máxima de pessoas na reserva"
+            "description": "Maximum number of people for the reservation."
           },
           {
             "in": "query",
@@ -721,7 +723,7 @@
               "type": "string",
               "example": "Bearer <token>"
             },
-            "description": "Token JWT de autenticação no formato Bearer"
+            "description": "Authentication JWT token in Bearer format."
           }
         ],
         "responses": {
@@ -829,7 +831,7 @@
             }
           },
           "500": {
-            "description": "Erro interno desconhecido",
+            "description": "Unknown internal error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -904,7 +906,7 @@
               "type": "string",
               "example": "Bearer <token>"
             },
-            "description": "Token JWT de autenticação no formato Bearer"
+            "description": "Authentication JWT token in Bearer format."
           }
         ],
         "responses": {
@@ -967,7 +969,7 @@
             }
           },
           "500": {
-            "description": "Erro interno desconhecido",
+            "description": "Unknown internal error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1009,7 +1011,7 @@
               "type": "string",
               "example": "Bearer <token>"
             },
-            "description": "Token JWT de autenticação no formato Bearer"
+            "description": "Authentication JWT token in Bearer format."
           }
         ],
         "responses": {
@@ -1124,7 +1126,7 @@
             }
           },
           "500": {
-            "description": "Erro interno desconhecido",
+            "description": "Unknown internal error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1209,7 +1211,7 @@
             }
           },
           "500": {
-            "description": "Erro interno desconhecido",
+            "description": "Unknown internal error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1236,7 +1238,7 @@
               "type": "string",
               "example": "Bearer <token>"
             },
-            "description": "Token JWT de autenticação no formato Bearer"
+            "description": "Authentication JWT token in Bearer format."
           }
         ]
       }
@@ -1354,7 +1356,7 @@
               "type": "string",
               "example": "Bearer <token>"
             },
-            "description": "Token JWT de autenticação no formato Bearer"
+            "description": "Authentication JWT token in Bearer format."
           }
         ],
         "responses": {
@@ -1506,33 +1508,33 @@
       },
       "CreateBookingBody": {
         "type": "object",
-        "required": ["data", "nome", "reservaEmail", "qtd"],
+        "required": ["date", "name", "email", "peopleCount"],
         "properties": {
-          "data": {
+          "date": {
             "type": "string",
             "format": "date-time",
             "example": "2025-06-09T20:00:00.000Z",
-            "description": "Data e hora da reserva no formato ISO 8601."
+            "description": "Reservation date and time in ISO 8601 format."
           },
-          "nome": {
+          "name": {
             "type": "string",
             "example": "Chris",
-            "description": "Nome do responsável pela reserva."
+            "description": "Name of the person responsible for the reservation."
           },
-          "reservaEmail": {
+          "email": {
             "type": "string",
             "example": "chris@email.com",
-            "description": "E-mail do responsável pela reserva."
+            "description": "Email of the person responsible for the reservation."
           },
-          "telefone": {
+          "phone": {
             "type": "string",
             "example": "+5511999999999",
-            "description": "Telefone do responsável pela reserva."
+            "description": "Phone number of the person responsible for the reservation."
           },
-          "qtd": {
+          "peopleCount": {
             "type": "integer",
             "example": 4,
-            "description": "Quantidade de pessoas para a reserva."
+            "description": "Number of people for the reservation."
           }
         }
       },
@@ -1592,97 +1594,100 @@
       "CreateSpecificBookingBody": {
         "type": "object",
         "required": [
-          "data",
-          "nome",
-          "reservaEmail",
-          "qtd",
-          "tipo",
-          "giroId",
-          "eventoId"
+          "date",
+          "name",
+          "email",
+          "phone",
+          "peopleCount",
+          "type",
+          "spinId",
+          "eventId",
+          "tableReservation",
+          "environmentReservation"
         ],
         "properties": {
-          "data": {
+          "date": {
             "type": "string",
             "format": "date-time",
             "example": "2025-06-09T20:00:00.000Z",
-            "description": "Data e hora da reserva no formato ISO 8601."
+            "description": "Reservation date and time in ISO 8601 format."
           },
-          "nome": {
+          "name": {
             "type": "string",
             "example": "Chris",
-            "description": "Nome do responsável pela reserva."
+            "description": "Name of the person responsible for the reservation."
           },
-          "reservaEmail": {
+          "email": {
             "type": "string",
             "example": "chris@email.com",
-            "description": "E-mail do responsável pela reserva."
+            "description": "Email of the person responsible for the reservation."
           },
-          "telefone": {
+          "phone": {
             "type": "string",
             "example": "+5511999999999",
-            "description": "Telefone do responsável pela reserva."
+            "description": "Phone number of the person responsible for the reservation."
           },
-          "qtd": {
+          "peopleCount": {
             "type": "integer",
             "example": 4,
-            "description": "Quantidade de pessoas para a reserva."
+            "description": "Number of people for the reservation."
           },
-          "tipo": {
+          "type": {
             "type": "string",
-            "enum": ["cenario", "ambiente"],
-            "example": "cenario",
-            "description": "Tipo da reserva."
+            "enum": ["scenario", "environment"],
+            "example": "scenario",
+            "description": "Type of reservation."
           },
-          "giroId": {
+          "spinId": {
             "type": "integer",
             "example": 1,
-            "description": "ID do giro (turno) desejado."
+            "description": "ID of the desired rotation (shift)."
           },
-          "eventoId": {
+          "eventId": {
             "type": "integer",
             "example": 1,
-            "description": "ID do evento."
+            "description": "EventID."
           },
-          "reservaMesa": {
+          "tableReservation": {
             "type": "integer",
             "example": 10,
             "nullable": true,
-            "description": "ID da mesa reservada (obrigatório se tipo='cenario')."
+            "description": "Reserved table ID (required if type='scenario')."
           },
-          "reservaAmbiente": {
+          "environmentReservation": {
             "type": "integer",
             "example": 5,
             "nullable": true,
-            "description": "ID do ambiente reservado (obrigatório se tipo='ambiente')."
+            "description": "Reserved environment ID (required if type='environment')."
           }
         },
         "examples": {
           "cenario": {
-            "summary": "Exemplo de payload para tipo 'cenario'",
+            "summary": "Example payload for type 'scenario'.",
             "value": {
-              "nome": "Chris",
-              "reservaEmail": "chris@teste.com",
-              "telefone": "+5511999999999",
-              "qtd": 8,
-              "data": "2025-06-09T18:00:00.000Z",
-              "tipo": "cenario",
-              "reservaMesa": "4",
-              "giroId": "7",
-              "eventoId": "6"
+              "name": "Chris",
+              "email": "chris@teste.com",
+              "phone": "+5511999999999",
+              "peopleCount": 8,
+              "date": "2025-06-09T18:00:00.000Z",
+              "type": "cenario",
+              "tableReservation": "4",
+              "spinId": "7",
+              "eventId": "6"
             }
           },
           "ambiente": {
-            "summary": "Exemplo de payload para tipo 'ambiente'",
+            "summary": "Example payload for type 'space'.",
             "value": {
-              "nome": "Chris",
-              "reservaEmail": "chris@teste.com",
-              "telefone": "+5511999999999",
-              "qtd": 40,
-              "data": "2025-06-09T18:00:00.000Z",
-              "tipo": "ambiente",
-              "reservaAmbiente": "6",
-              "giroId": "4",
-              "eventoId": "7"
+              "name": "Chris",
+              "email": "chris@teste.com",
+              "phone": "+5511999999999",
+              "peopleCount": 40,
+              "date": "2025-06-09T18:00:00.000Z",
+              "type": "ambiente",
+              "tableReservation": "6",
+              "spinId": "4",
+              "eventId": "7"
             }
           }
         }
@@ -1690,43 +1695,63 @@
       "CreateSpecificBookingResponse": {
         "type": "object",
         "properties": {
-          "reservaAtiva": {
+          "active": {
             "type": "boolean",
-            "example": true
+            "example": true,           
+            "description": "Reservation activation status."
           },
           "id": {
             "type": "integer",
-            "example": 5
+            "example": 5,
+            "description": "Reservation ID."
           },
-          "reservaHora": {
+          "eventId": {
+            "type": "integer",
+            "example": 6,
+            "description": "Event ID."
+          },
+          "reservationTime": {
             "type": "string",
-            "example": "19:00:00"
+            "example": "19:00:00",
+            "description": "Schedule time."
           },
-          "nome": {
+          "name": {
             "type": "string",
-            "example": "Chris"
+            "example": "Chris",
+            "description": "Name of the person responsible for the reservation."
           },
-          "reservaEmail": {
+          "email": {
             "type": "string",
-            "example": "chris@teste.com"
+            "example": "chris@teste.com",
+            "description": "Email of the person responsible for the reservation."
           },
-          "telefone": {
+          "phone": {
             "type": "string",
-            "example": "+5511999999999"
+            "example": "+5511999999999",
+            "description": "Phone number of the person responsible for the reservation."
           },
-          "reservaMesa": {
+          "schedule": {
             "type": "integer",
             "nullable": true,
-            "example": 10
+            "example": 7,
+            "description": "Spin ID"
           },
-          "reservaAmbiente": {
+          "table": {
             "type": "integer",
             "nullable": true,
-            "example": 5
+            "example": 5,
+            "description": "Reserved table ID."
           },
-          "reservaQtdPessoas": {
+          "environment": {
             "type": "integer",
-            "example": 7
+            "nullable": true,
+            "example": 7,
+            "description": "Reserved space ID."
+          },
+          "peopleCount": {
+            "type": "integer",
+            "example": 7,
+            "description": "Number of people in the reservation."
           },
           "updatedAt": {
             "type": "string",
@@ -1740,53 +1765,53 @@
           }
         }
       },
-      "GrupoMesaDisponivel": {
+      "AvailableTableGroup": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer"
           },
-          "grupoTitulo": {
+          "groupTitle": {
             "type": "string"
           },
-          "grupoObs": {
+          "groupNotes": {
             "type": "string",
             "nullable": true
           }
         }
       },
-      "GiroMesa": {
+      "TableRotation": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer"
           },
-          "giroCenario": {
+          "rotationScenario": {
             "type": "integer",
             "nullable": true
           },
-          "giroHoraInicio": {
+          "rotationStartTime": {
             "type": "string"
           },
-          "giroHoraFim": {
+          "rotationEndTime": {
             "type": "string"
           },
-          "tipoAmbiente": {
+          "environmentType": {
             "type": "string",
             "enum": ["cenario", "ambiente"]
           },
-          "qtdDisponivel": {
+          "availableQuantity": {
             "type": "integer",
             "nullable": true
           },
-          "grupoMesasDisponivel": {
+          "availableTableGroups": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/GrupoMesaDisponivel"
+              "$ref": "#/components/schemas/AvailableTableGroup"
             },
             "nullable": true
           },
-          "quantidadeMesasDisponiveis": {
+          "availableTablesQuantity": {
             "type": "integer",
             "nullable": true
           }
@@ -1798,27 +1823,27 @@
           "id": {
             "type": "integer"
           },
-          "eveDataEvento": {
+          "eventDate": {
             "type": "string",
             "format": "date-time"
           },
-          "eveUsuario": {
+          "userId": {
             "type": "integer"
           },
-          "eveTitulo": {
+          "eventTitle": {
             "type": "string"
           },
-          "eveDescricao": {
+          "eventDescription": {
             "type": "string"
           },
-          "eveCenarioMesas": {
+          "eventTableScenario": {
             "type": "integer",
             "nullable": true
           },
-          "GiroMesas": {
+          "tableRotations": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/GiroMesa"
+              "$ref": "#/components/schemas/TableRotation"
             }
           }
         }
@@ -1829,24 +1854,24 @@
           "id": {
             "type": "integer"
           },
-          "id_giro": {
+          "spinId": {
             "type": "integer"
           },
-          "nome": {
+          "name": {
             "type": "string"
           },
-          "limiteReservas": {
+          "reservationLimit": {
             "type": "integer",
             "nullable": true
           },
-          "limitePessoas": {
+          "peopleLimit": {
             "type": "integer"
           },
-          "limitePessoasReserva": {
+          "peoplePerReservationLimit": {
             "type": "integer",
             "nullable": true
           },
-          "minimoPessoasReserva": {
+          "minPeoplePerReservation": {
             "type": "integer",
             "nullable": true
           }
@@ -1858,41 +1883,41 @@
           "id": {
             "type": "integer"
           },
-          "nome": {
+          "name": {
             "type": "string"
           },
-          "capacidadeMin": {
+          "minCapacity": {
             "type": "integer"
           },
-          "capacidadeMax": {
+          "maxCapacity": {
             "type": "integer"
           }
         }
       },
-      "GiroMesaEvent": {
+      "spins": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer"
           },
-          "giroEvento": {
+          "eventId": {
             "type": "integer"
           },
-          "giroCenario": {
+          "scenarioId": {
             "type": "integer",
             "nullable": true
           },
-          "giroHoraInicio": {
+          "startTime": {
             "type": "string"
           },
-          "giroHoraFim": {
+          "endTime": {
             "type": "string"
           },
-          "nomeCenario": {
+          "scenarioName": {
             "type": "string",
             "nullable": true
           },
-          "cenario": {
+          "scenario": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CenarioMesa"
@@ -1911,27 +1936,27 @@
           "id": {
             "type": "integer"
           },
-          "eveDataEvento": {
+          "eventDate": {
             "type": "string",
             "format": "date-time"
           },
-          "eveUsuario": {
+          "userId": {
             "type": "integer"
           },
-          "eveTitulo": {
+          "title": {
             "type": "string"
           },
-          "eveDescricao": {
+          "description": {
             "type": "string"
           },
-          "eveCenarioMesas": {
+          "tableScenario": {
             "type": "integer",
             "nullable": true
           },
-          "GiroMesas": {
+          "spins": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/GiroMesaEvent"
+              "$ref": "#/components/schemas/spins"
             }
           }
         }
