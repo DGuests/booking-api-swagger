@@ -1618,6 +1618,7 @@
           "phone",
           "peopleCount",
           "type",
+          "userId",
           "spinId",
           "eventId",
           "tableReservation",
@@ -1656,10 +1657,15 @@
             "example": "scenario",
             "description": "Type of reservation."
           },
-          "spinId": {
+          "userId": {
             "type": "integer",
             "example": 1,
             "description": "ID of the desired rotation (shift)."
+          },
+          "spinId": {
+            "type": "integer",
+            "example": 1,
+            "description": "Restaurant ID."
           },
           "eventId": {
             "type": "integer",
