@@ -348,6 +348,15 @@
           },
           {
             "in": "query",
+            "name": "restaurant_id",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Restaurant ID."
+          },
+          {
+            "in": "query",
             "name": "pageSize",
             "schema": {
               "type": "integer"
@@ -360,7 +369,7 @@
             "schema": {
               "type": "integer"
             },
-            "description": "Page number. Default value. 0"
+            "description": "Page number. Default value 0."
           },
           {
             "in": "header",
@@ -436,6 +445,15 @@
               "example": "2025-06-09"
             },
             "description": "Date in 'YYYY-MM-DD' format."
+          },
+          {
+            "in": "query",
+            "name": "restaurant_id",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Restaurant ID."
           },
           {
             "in": "query",
