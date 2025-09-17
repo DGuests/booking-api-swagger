@@ -1729,6 +1729,11 @@
             "example": 5,
             "description": "Reservation ID."
           },
+          "useId": {
+            "type": "integer",
+            "example": 6,
+            "description": "Restaurant ID."
+          },
           "eventId": {
             "type": "integer",
             "example": 6,
