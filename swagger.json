@@ -235,17 +235,17 @@
                   "$ref": "#/components/schemas/CreateSpecificBookingResponse"
                 },
                 "example": {
-                  "active": true,
+                  "reservaAtiva": true,
                   "id": 5,
-                  "eventId": 6,
-                  "reservationTime": "19:00:00",
-                  "name": "Chris",
-                  "email": "chris@teste.com",
-                  "phone": 5511999999999,
-                  "schedule": 7,
-                  "table": 10,
-                  "environment": null,
-                  "peopleCount": 7,
+                  "id_evento": 6,
+                  "reservaHora": "19:00:00",
+                  "nome": "Chris",
+                  "reservaEmail": "chris@teste.com",
+                  "telefone": 5511999999999,
+                  "reservaHorario": 7,
+                  "reservaMesa": 10,
+                  "reservaAmbiente": null,
+                  "reservaQtdPessoas": 7,
                   "updatedAt": "2025-07-07T19:10:23.718Z",
                   "createdAt": "2025-07-07T19:10:23.718Z"
                 }
@@ -1612,46 +1612,46 @@
       "CreateSpecificBookingBody": {
         "type": "object",
         "required": [
-          "date",
-          "name",
-          "email",
-          "phone",
-          "peopleCount",
-          "type",
+          "horario",
+          "nome",
+          "reservaEmail",
+          "qtd",
+          "telefone",
+          "tipo",
           "userId",
-          "spinId",
-          "eventId",
-          "tableReservation",
-          "environmentReservation"
+          "giroId",
+          "eventoId",
+          "reservaMesa",
+          "reservaAmbiente"
         ],
         "properties": {
-          "date": {
+          "horario": {
             "type": "string",
-            "format": "date-time",
-            "example": "2025-06-09T20:00:00.000Z",
-            "description": "Reservation date and time in ISO 8601 format."
+            "format": "string",
+            "example": "20:00:00",
+            "description": "Reservation time."
           },
-          "name": {
+          "nome": {
             "type": "string",
             "example": "Chris",
             "description": "Name of the person responsible for the reservation."
           },
-          "email": {
+          "reservaEmail": {
             "type": "string",
             "example": "chris@email.com",
             "description": "Email of the person responsible for the reservation."
           },
-          "phone": {
-            "type": "string",
-            "example": "+5511999999999",
-            "description": "Phone number of the person responsible for the reservation."
-          },
-          "peopleCount": {
+          "qtd": {
             "type": "integer",
             "example": 4,
             "description": "Number of people for the reservation."
           },
-          "type": {
+          "telefone": {
+            "type": "string",
+            "example": "+5511999999999",
+            "description": "Phone number of the person responsible for the reservation."
+          },
+          "tipo": {
             "type": "string",
             "enum": ["scenario", "environment"],
             "example": "scenario",
@@ -1662,23 +1662,23 @@
             "example": 1,
             "description": "Restaurant ID."
           },
-          "spinId": {
+          "giroId": {
             "type": "integer",
             "example": 1,
             "description": "ID of the desired rotation (shift)."
           },
-          "eventId": {
+          "eventoId": {
             "type": "integer",
             "example": 1,
             "description": "EventID."
           },
-          "tableReservation": {
+          "reservaMesa": {
             "type": "integer",
             "example": 10,
             "nullable": true,
             "description": "Reserved table ID (required if type='scenario')."
           },
-          "environmentReservation": {
+          "reservaAmbiente": {
             "type": "integer",
             "example": 5,
             "nullable": true,
@@ -1689,29 +1689,31 @@
           "cenario": {
             "summary": "Example payload for type 'scenario'.",
             "value": {
-              "name": "Chris",
-              "email": "chris@teste.com",
-              "phone": "+5511999999999",
-              "peopleCount": 8,
-              "date": "2025-06-09T18:00:00.000Z",
-              "type": "cenario",
-              "tableReservation": "4",
-              "spinId": "7",
-              "eventId": "6"
+              "horario": "18:00:00",
+              "nome": "Chris",
+              "reservaEmail": "chris@teste.com",
+              "qtd": 8,
+              "telefone": "+5511999999999",
+              "tipo": "cenario",
+              "userId": 1,
+              "giroId": "7",
+              "eventoId": "6",
+              "reservaMesa": "4"
             }
           },
           "ambiente": {
             "summary": "Example payload for type 'space'.",
             "value": {
-              "name": "Chris",
-              "email": "chris@teste.com",
-              "phone": "+5511999999999",
-              "peopleCount": 40,
-              "date": "2025-06-09T18:00:00.000Z",
-              "type": "ambiente",
-              "tableReservation": "6",
-              "spinId": "4",
-              "eventId": "7"
+              "horario": "18:00:00",
+              "nome": "Chris",
+              "reservaEmail": "chris@teste.com",
+              "qtd": 40,
+              "telefone": "+5511999999999",
+              "tipo": "ambiente",
+              "userId": 1,
+              "giroId": "6",
+              "eventoId": "7",
+              "reservaAmbiente": "4"
             }
           }
         }
@@ -1719,7 +1721,7 @@
       "CreateSpecificBookingResponse": {
         "type": "object",
         "properties": {
-          "active": {
+          "reservaAtiva": {
             "type": "boolean",
             "example": true,           
             "description": "Reservation activation status."
@@ -1729,55 +1731,50 @@
             "example": 5,
             "description": "Reservation ID."
           },
-          "useId": {
-            "type": "integer",
-            "example": 6,
-            "description": "Restaurant ID."
-          },
-          "eventId": {
+          "id_evento": {
             "type": "integer",
             "example": 6,
             "description": "Event ID."
           },
-          "reservationTime": {
+          "reservaHora": {
             "type": "string",
             "example": "19:00:00",
             "description": "Schedule time."
           },
-          "name": {
+          "nome": {
             "type": "string",
             "example": "Chris",
             "description": "Name of the person responsible for the reservation."
           },
-          "email": {
+          "reservaEmail": {
             "type": "string",
             "example": "chris@teste.com",
             "description": "Email of the person responsible for the reservation."
           },
-          "phone": {
+          "telefone": {
             "type": "string",
             "example": "+5511999999999",
             "description": "Phone number of the person responsible for the reservation."
           },
-          "schedule": {
+          "reservaHorario": {
             "type": "integer",
             "nullable": true,
             "example": 7,
             "description": "Spin ID"
           },
-          "table": {
+          "reservaMesa": {
             "type": "integer",
             "nullable": true,
             "example": 5,
             "description": "Reserved table ID."
           },
-          "environment": {
+          "reservaAmbiente": {
             "type": "integer",
             "nullable": true,
             "example": 7,
             "description": "Reserved space ID."
           },
-          "peopleCount": {
+          "reservaQtdPessoas": {
             "type": "integer",
             "example": 7,
             "description": "Number of people in the reservation."
@@ -1794,53 +1791,57 @@
           }
         }
       },
-      "AvailableTableGroup": {
+      "GrupoMesasDisponivel": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer"
           },
-          "groupTitle": {
+          "grupoTitulo": {
             "type": "string"
           },
-          "groupNotes": {
+          "grupoObs": {
             "type": "string",
             "nullable": true
           }
         }
       },
-      "TableRotation": {
+      "GiroMesas": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer"
           },
-          "rotationScenario": {
+          "giroCenario": {
             "type": "integer",
             "nullable": true
           },
-          "rotationStartTime": {
+          "giroHoraInicio": {
             "type": "string"
           },
-          "rotationEndTime": {
+          "giroHoraFim": {
             "type": "string"
           },
-          "environmentType": {
+          "tipoAmbiente": {
             "type": "string",
             "enum": ["cenario", "ambiente"]
           },
-          "availableQuantity": {
+          "qtdLugaresDisponiveis": {
             "type": "integer",
             "nullable": true
           },
-          "availableTableGroups": {
+          "limitePessoasReserva": {
+            "type": "integer",
+            "nullable": true
+          },
+          "grupoMesasDisponivel": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AvailableTableGroup"
+              "$ref": "#/components/schemas/GrupoMesasDisponivel"
             },
             "nullable": true
           },
-          "availableTablesQuantity": {
+          "quantidadeMesasDisponiveis": {
             "type": "integer",
             "nullable": true
           }
@@ -1852,27 +1853,27 @@
           "id": {
             "type": "integer"
           },
-          "eventDate": {
+          "eveDataEvento": {
             "type": "string",
             "format": "date-time"
           },
-          "userId": {
+          "eveUsuario": {
             "type": "integer"
           },
-          "eventTitle": {
+          "eveTitulo": {
             "type": "string"
           },
-          "eventDescription": {
+          "eveDescricao": {
             "type": "string"
           },
-          "eventTableScenario": {
+          "eveCenarioMesas": {
             "type": "integer",
             "nullable": true
           },
-          "tableRotations": {
+          "GiroMesas": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TableRotation"
+              "$ref": "#/components/schemas/GiroMesas"
             }
           }
         }
@@ -1883,24 +1884,24 @@
           "id": {
             "type": "integer"
           },
-          "spinId": {
+          "id_giro": {
             "type": "integer"
           },
-          "name": {
+          "nome": {
             "type": "string"
           },
-          "reservationLimit": {
+          "limiteReservas": {
             "type": "integer",
             "nullable": true
           },
-          "peopleLimit": {
+          "limitePessoas": {
             "type": "integer"
           },
-          "peoplePerReservationLimit": {
+          "limitePessoasReserva": {
             "type": "integer",
             "nullable": true
           },
-          "minPeoplePerReservation": {
+          "minimoPessoasReserva": {
             "type": "integer",
             "nullable": true
           }
@@ -1912,13 +1913,13 @@
           "id": {
             "type": "integer"
           },
-          "name": {
+          "nome": {
             "type": "string"
           },
-          "minCapacity": {
+          "capacidadeMin": {
             "type": "integer"
           },
-          "maxCapacity": {
+          "capacidadeMax": {
             "type": "integer"
           }
         }
@@ -1929,24 +1930,24 @@
           "id": {
             "type": "integer"
           },
-          "eventId": {
+          "giroEvento": {
             "type": "integer"
           },
-          "scenarioId": {
+          "giroCenario": {
             "type": "integer",
             "nullable": true
           },
-          "startTime": {
+          "giroHoraInicio": {
             "type": "string"
           },
-          "endTime": {
+          "giroHoraFim": {
             "type": "string"
           },
-          "scenarioName": {
+          "nomeCenario": {
             "type": "string",
             "nullable": true
           },
-          "scenario": {
+          "cenario": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CenarioMesa"
@@ -1965,24 +1966,24 @@
           "id": {
             "type": "integer"
           },
-          "eventDate": {
+          "eveDataEvento": {
             "type": "string",
             "format": "date-time"
           },
-          "userId": {
+          "eveUsuario": {
             "type": "integer"
           },
-          "title": {
+          "eveTitulo": {
             "type": "string"
           },
-          "description": {
+          "eveDescricao": {
             "type": "string"
           },
-          "tableScenario": {
+          "eveCenarioMesas": {
             "type": "integer",
             "nullable": true
           },
-          "spins": {
+          "GiroMesas": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/spins"
