@@ -431,6 +431,69 @@
         }
       }
     },
+    "/getAllEvents": {
+      "get": {
+        "summary": "Returns all events.",
+        "tags": ["Info"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "restaurant_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Restaurant ID to filter events.",
+            "example": "123"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lists all events by restaurant ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllEventsResponseItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data_especifica parameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown internal error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/getEventInformation": {
       "get": {
         "summary": "Returns detailed event information.",
@@ -1806,6 +1869,26 @@
           }
         }
       },
+      "MesaDisponivel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "id_giro": {
+            "type": "integer"
+          },
+          "capacidadeMin": {
+            "type": "integer"
+          },
+          "capacidadeMax": {
+            "type": "integer"
+          }
+        }
+      },
       "GiroMesas": {
         "type": "object",
         "properties": {
@@ -1826,7 +1909,23 @@
             "type": "string",
             "enum": ["cenario", "ambiente"]
           },
+          "nomeAmbiente": {
+            "type": "string",
+            "nullable": true
+          },
+          "AmbienteId": {
+            "type": "integer",
+            "nullable": true
+          },
           "qtdLugaresDisponiveis": {
+            "type": "integer",
+            "nullable": true
+          },
+          "limiteReservas": {
+            "type": "integer",
+            "nullable": true
+          },
+          "limitePessoas": {
             "type": "integer",
             "nullable": true
           },
@@ -1838,6 +1937,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/GrupoMesasDisponivel"
+            },
+            "nullable": true
+          },
+          "mesasDisponiveis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MesaDisponivel"
             },
             "nullable": true
           },
@@ -2529,6 +2635,36 @@
             "items": {
               "$ref": "#/components/schemas/EveEsperaGrupo"
             }
+          }
+        }
+      },
+      "GetAllEventsResponseItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Event ID."
+          },
+          "eveDataEvento": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Event datetime.",
+            "example": "2023-12-25T00:00:00.000Z"
+          },
+          "eveUsuario": {
+            "type": "string",
+            "description": "User ID.",
+            "example": "123"
+          },
+          "eveTitulo": {
+            "type": "string",
+            "description": "Event title.",
+            "example": "Event title"
+          },
+          "eveDescricao": {
+            "type": "string",
+            "description": "Event description.",
+            "example": "Event description"
           }
         }
       }
