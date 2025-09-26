@@ -215,6 +215,17 @@
         },
         "parameters": [
           {
+            "in": "query",
+            "name": "language",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["en"],
+              "example": "en"
+            },
+            "description": "Language for endpoint response translation. Default: pt (Portuguese)."
+          },
+          {
             "in": "header",
             "name": "Authorization",
             "required": true,
