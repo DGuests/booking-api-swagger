@@ -11,123 +11,6 @@
     }
   ],
   "paths": {
-    "/createBooking": {
-      "post": {
-        "summary": "Cria uma nova reserva para um evento.",
-        "tags": ["Booking"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateBookingBody"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Reservation created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateBookingResponse"
-                },
-                "example": {
-                  "reservaAtiva": true,
-                  "id": 5,
-                  "reservaHora": "19:00:00",
-                  "nome": "Chris",
-                  "reservaEmail": "chris@teste.com",
-                  "telefone": "+5511999999999",
-                  "reservaMesa": 6,
-                  "reservaAmbiente": null,
-                  "reservaQtdPessoas": 7,
-                  "updatedAt": "2025-07-07T19:10:23.718Z",
-                  "createdAt": "2025-07-07T19:10:23.718Z"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Evento ou giro não encontrado",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Nenhum evento encontrado para essa data"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflito de reserva (reserva indisponível)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Reserva indisponível"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Dados de entrada inválidos ou campos obrigatórios ausentes",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Campo obrigatório ausente: nome"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unknown internal error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Internal Server Error!!!"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "Bearer <token>"
-            },
-            "description": "Token JWT de autenticação no formato Bearer"
-          }
-        ]
-      }
-    },
     "/login": {
       "post": {
         "summary": "Autentica um usuário e retorna o token JWT",
@@ -246,6 +129,19 @@
                   "reservaMesa": 10,
                   "reservaAmbiente": null,
                   "reservaQtdPessoas": 7,
+                  "reservaOcasiao": "chá de bebe",
+                  "reservaRestricaoDieta": [
+                    "sem alcool",
+                    "sem laticínios",
+                    "diabética",
+                    "sem gluten",
+                    "halal",
+                    "kosher",
+                    "intolerância a lactose",
+                    "paleolítica",
+                    "pescetariana",
+                    "vegetariana"
+                  ],
                   "updatedAt": "2025-07-07T19:10:23.718Z",
                   "createdAt": "2025-07-07T19:10:23.718Z"
                 }
@@ -339,6 +235,7 @@
           {
             "in": "query",
             "name": "data_especifica",
+            "required": true,
             "schema": {
               "type": "string",
               "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
@@ -349,27 +246,12 @@
           {
             "in": "query",
             "name": "restaurant_id",
+            "required": true,
             "schema": {
               "type": "integer",
               "example": 1
             },
             "description": "Restaurant ID."
-          },
-          {
-            "in": "query",
-            "name": "pageSize",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Number of items per page. Default value: 10."
-          },
-          {
-            "in": "query",
-            "name": "pageNumber",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Page number. Default value 0."
           },
           {
             "in": "header",
@@ -445,6 +327,16 @@
             },
             "description": "Restaurant ID to filter events.",
             "example": "123"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            },
+            "description": "Authentication JWT token in Bearer format."
           }
         ],
         "responses": {
@@ -502,6 +394,7 @@
           {
             "in": "query",
             "name": "data_especifica",
+            "required": true,
             "schema": {
               "type": "string",
               "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
@@ -512,27 +405,12 @@
           {
             "in": "query",
             "name": "restaurant_id",
+            "required": true,
             "schema": {
               "type": "integer",
               "example": 1
             },
             "description": "Restaurant ID."
-          },
-          {
-            "in": "query",
-            "name": "pageSize",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Number of items per page. Default value: 10."
-          },
-          {
-            "in": "query",
-            "name": "pageNumber",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Page number. Default value 0"
           },
           {
             "in": "header",
@@ -599,12 +477,12 @@
         "parameters": [
           {
             "in": "query",
-            "name": "id_config",
+            "name": "restaurant_id",
             "required": true,
             "schema": {
               "type": "integer"
             },
-            "description": "ID da configuração da fila de espera. Obrigatório."
+            "description": "ID do restautante"
           },
           {
             "in": "query",
@@ -719,219 +597,6 @@
         }
       }
     },
-    "/getReservation": {
-      "get": {
-        "summary": "Retorna as reservas de um evento em uma data específica",
-        "tags": ["Booking"],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "data_especifica",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-              "example": "2025-06-09"
-            },
-            "description": "Data no formato 'YYYY-MM-DD'. Obrigatório."
-          },
-          {
-            "in": "query",
-            "name": "pageSize",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Número de itens por página. Valor Padrão 10"
-          },
-          {
-            "in": "query",
-            "name": "pageNumber",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Page number. Default value 0"
-          },
-          {
-            "in": "query",
-            "name": "qtd_min",
-            "schema": {
-              "type": "integer",
-              "example": 2
-            },
-            "description": "Minimum number of people for the reservation."
-          },
-          {
-            "in": "query",
-            "name": "qtd_max",
-            "schema": {
-              "type": "integer",
-              "example": 10
-            },
-            "description": "Maximum number of people for the reservation."
-          },
-          {
-            "in": "query",
-            "name": "nome",
-            "schema": {
-              "type": "string",
-              "example": "Chris"
-            },
-            "description": "Nome do responsável pela reserva"
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "schema": {
-              "type": "string",
-              "example": "chris@email.com"
-            },
-            "description": "E-mail do responsável pela reserva"
-          },
-          {
-            "in": "query",
-            "name": "status",
-            "schema": {
-              "type": "string",
-              "example": "confirmada"
-            },
-            "description": "Status da reserva"
-          },
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "Bearer <token>"
-            },
-            "description": "Authentication JWT token in Bearer format."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lista de reservas",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetReservationResponseItem"
-                  }
-                },
-                "example": [
-                  {
-                    "id": 1,
-                    "reservaMesa": null,
-                    "id_evento": 6,
-                    "nome": "Chris",
-                    "reservaEmail": null,
-                    "telefone": null,
-                    "documento": null,
-                    "reservaAniversariante": null,
-                    "reservaAtiva": true,
-                    "reservaHora": null,
-                    "reservaHorario": 6,
-                    "reservaQtdPessoas": 15,
-                    "id_usuario": 1,
-                    "reservaObs": null,
-                    "reservaPagamento": null,
-                    "motivoCancelamento": null,
-                    "reservaCheckin": null,
-                    "dataNascimento": null,
-                    "reservaAmbiente": 6,
-                    "status": null,
-                    "createdAt": "2025-06-05T17:14:26.000Z",
-                    "updatedAt": "2025-06-05T17:14:27.000Z",
-                    "deletedAt": null,
-                    "PrmMesa": null,
-                    "EveReservaAmbiente": {
-                      "id": 6,
-                      "id_giro": 6,
-                      "nome": "Locura",
-                      "limiteReservas": null,
-                      "limitePessoas": 20,
-                      "limitePessoasReserva": null,
-                      "minimoPessoasReserva": null
-                    }
-                  },
-                  {
-                    "id": 2,
-                    "reservaMesa": 3,
-                    "id_evento": 6,
-                    "nome": "Manuel",
-                    "reservaEmail": null,
-                    "telefone": null,
-                    "documento": null,
-                    "reservaAniversariante": null,
-                    "reservaAtiva": true,
-                    "reservaHora": null,
-                    "reservaHorario": 7,
-                    "reservaQtdPessoas": 6,
-                    "id_usuario": 1,
-                    "reservaObs": null,
-                    "reservaPagamento": null,
-                    "motivoCancelamento": null,
-                    "reservaCheckin": null,
-                    "dataNascimento": null,
-                    "reservaAmbiente": null,
-                    "status": null,
-                    "createdAt": "2025-06-05T17:20:45.000Z",
-                    "updatedAt": "2025-06-05T17:21:37.000Z",
-                    "deletedAt": null,
-                    "PrmMesa": {
-                      "id": 3,
-                      "nome": "Mesa E",
-                      "id_cenario": 1,
-                      "id_grupo": 1,
-                      "numero": 6,
-                      "capacidadeMin": 6,
-                      "capacidadeMax": 10
-                    },
-                    "EveReservaAmbiente": null
-                  }
-                ]
-              }
-            }
-          },
-          "400": {
-            "description": "Parâmetro data_especifica inválido",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "message": "Invalid date format"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unknown internal error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "message": "Internal Server Error!!!"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/getSpins": {
       "get": {
         "summary": "Lista os giros (spins) disponíveis para o usuário autenticado",
@@ -939,7 +604,16 @@
         "parameters": [
           {
             "in": "query",
-            "name": "horaEntreIncioFim",
+            "name": "restaurant_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Restaurant ID"
+          },
+          {
+            "in": "query",
+            "name": "horaEntreInicioFim",
             "schema": {
               "type": "string",
               "example": "09:00:00"
@@ -1075,6 +749,15 @@
         "summary": "Retorna as configurações do giro (ambiente ou cenário)",
         "tags": ["Spins"],
         "parameters": [
+          {
+            "in": "query",
+            "name": "restaurant_id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "restaurant ID"
+          },
           {
             "in": "query",
             "name": "giroId",
@@ -1227,103 +910,6 @@
         }
       }
     },
-    "/getUser": {
-      "get": {
-        "summary": "Retorna os dados do usuário",
-        "tags": ["User"],
-        "responses": {
-          "200": {
-            "description": "Dados do usuário",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetUserResponse"
-                },
-                "example": {
-                  "id": 1,
-                  "idCognito": "1",
-                  "nome": "Pamela",
-                  "slug": "1",
-                  "documento": "281.486.680-00",
-                  "email": "pamela@ficticio.com",
-                  "celular": null,
-                  "status": "a",
-                  "data_cadastro": null,
-                  "foto": null,
-                  "banner": null,
-                  "instagram": null,
-                  "facebook": null,
-                  "comum": 1,
-                  "email_validado": 0,
-                  "email_validado_oc": null,
-                  "sexo": null,
-                  "aniversario": null,
-                  "fraseWhats": null,
-                  "id_cidade": null,
-                  "endereco": null,
-                  "latitude": null,
-                  "longitude": null,
-                  "convidado_por": null,
-                  "premium_cardapio": null,
-                  "premium_delivery": null,
-                  "premium_valido": null,
-                  "colaborador_parceiro": null,
-                  "colaborador_parceiro_oc": 0
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Usuário não encontrado",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "message": "Usuário não encontrado"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unknown internal error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "message": "Internal Server Error!!!"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "Bearer <token>"
-            },
-            "description": "Authentication JWT token in Bearer format."
-          }
-        ]
-      }
-    },
     "/getWaitQueueConfig": {
       "get": {
         "summary": "Retorna as configurações da fila de espera",
@@ -1331,103 +917,11 @@
         "parameters": [
           {
             "in": "query",
-            "name": "id",
+            "name": "restaurant_id",
+            "required": true,
             "schema": {
               "type": "integer"
             }
-          },
-          {
-            "in": "query",
-            "name": "id_usuario",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "in": "query",
-            "name": "nome",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "descricao",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "tolerancia_minutos",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "in": "query",
-            "name": "ativo_online",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "in": "query",
-            "name": "ativo_qrcode",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "in": "query",
-            "name": "prioridade_ativa",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "in": "query",
-            "name": "usar_ambientes",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "in": "query",
-            "name": "max_pessoas",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "in": "query",
-            "name": "max_pessoas_mesa",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "in": "query",
-            "name": "dias_semana",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 6
-              }
-            },
-            "description": "Dias da semana (array de inteiros de 0 a 6, onde 0 é domingo)"
-          },
-          {
-            "in": "query",
-            "name": "data_especifica",
-            "schema": {
-              "type": "string",
-              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-              "example": "2025-06-09"
-            },
-            "description": "Data específica no formato 'YYYY-MM-DD'. Pode ser repetido para múltiplos valores."
           },
           {
             "in": "header",
@@ -1587,91 +1081,6 @@
           }
         }
       },
-      "CreateBookingBody": {
-        "type": "object",
-        "required": ["date", "name", "email", "peopleCount"],
-        "properties": {
-          "date": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2025-06-09T20:00:00.000Z",
-            "description": "Reservation date and time in ISO 8601 format."
-          },
-          "name": {
-            "type": "string",
-            "example": "Chris",
-            "description": "Name of the person responsible for the reservation."
-          },
-          "email": {
-            "type": "string",
-            "example": "chris@email.com",
-            "description": "Email of the person responsible for the reservation."
-          },
-          "phone": {
-            "type": "string",
-            "example": "+5511999999999",
-            "description": "Phone number of the person responsible for the reservation."
-          },
-          "peopleCount": {
-            "type": "integer",
-            "example": 4,
-            "description": "Number of people for the reservation."
-          }
-        }
-      },
-      "CreateBookingResponse": {
-        "type": "object",
-        "properties": {
-          "reservaAtiva": {
-            "type": "boolean",
-            "example": true
-          },
-          "id": {
-            "type": "integer",
-            "example": 5
-          },
-          "reservaHora": {
-            "type": "string",
-            "example": "19:00:00"
-          },
-          "nome": {
-            "type": "string",
-            "example": "Chris"
-          },
-          "reservaEmail": {
-            "type": "string",
-            "example": "chris@teste.com"
-          },
-          "telefone": {
-            "type": "string",
-            "example": "+5511999999999"
-          },
-          "reservaMesa": {
-            "type": "integer",
-            "nullable": true,
-            "example": 6
-          },
-          "reservaAmbiente": {
-            "type": "integer",
-            "nullable": true,
-            "example": null
-          },
-          "reservaQtdPessoas": {
-            "type": "integer",
-            "example": 7
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2025-07-07T19:10:23.718Z"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2025-07-07T19:10:23.718Z"
-          }
-        }
-      },
       "CreateSpecificBookingBody": {
         "type": "object",
         "required": [
@@ -1685,7 +1094,9 @@
           "giroId",
           "eventoId",
           "reservaMesa",
-          "reservaAmbiente"
+          "reservaAmbiente",
+          "reservaOcasiao",
+          "reservaRestricaoDieta"
         ],
         "properties": {
           "horario": {
@@ -1746,6 +1157,32 @@
             "example": 5,
             "nullable": true,
             "description": "Reserved environment ID (required if type='environment')."
+          },
+          "reservaOcasiao": {
+            "type": "string",
+            "example": "comemoração",
+            "nullable": true,
+            "description": "Occasion of the reservation. Example:  chá de bebê, despedida de solteiro, despedida de solteira, aniversário, chá de panela, eventos corporativos, noivado, aniversário feminino, graduação, lua de mel, promoção, aniversário masculino, amigos e família, curtição, jantar a dois, negócios, outros, relaxar"
+          },
+          "reservaRestricaoDieta": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "sem alcool",
+              "sem laticínios",
+              "diabética",
+              "sem gluten",
+              "halal",
+              "kosher",
+              "intolerância a lactose",
+              "paleolítica",
+              "pescetariana",
+              "vegetariana"
+            ],
+            "nullable": true,
+            "description": "Diet restrictions of the reservation."
           }
         },
         "examples": {
@@ -1836,6 +1273,32 @@
             "nullable": true,
             "example": 7,
             "description": "Reserved space ID."
+          },
+          "reservaOcasiao": {
+            "type": "string",
+            "example": "Aniversário",
+            "nullable": true,
+            "description": "Occasion of the reservation."
+          },
+          "reservaRestricaoDieta": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "sem alcool",
+              "sem laticínios",
+              "diabética",
+              "sem gluten",
+              "halal",
+              "kosher",
+              "intolerância a lactose",
+              "paleolítica",
+              "pescetariana",
+              "vegetariana"
+            ],
+            "nullable": true,
+            "description": "Diet restrictions of the reservation."
           },
           "reservaQtdPessoas": {
             "type": "integer",
@@ -2152,104 +1615,6 @@
           }
         }
       },
-      "GetReservationResponseItem": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer"
-          },
-          "reservaMesa": {
-            "type": "integer",
-            "nullable": true
-          },
-          "id_evento": {
-            "type": "integer"
-          },
-          "nome": {
-            "type": "string"
-          },
-          "reservaEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "telefone": {
-            "type": "string",
-            "nullable": true
-          },
-          "documento": {
-            "type": "string",
-            "nullable": true
-          },
-          "reservaAniversariante": {
-            "type": "string",
-            "nullable": true
-          },
-          "reservaAtiva": {
-            "type": "boolean"
-          },
-          "reservaHora": {
-            "type": "string",
-            "nullable": true
-          },
-          "reservaHorario": {
-            "type": "integer",
-            "nullable": true
-          },
-          "reservaQtdPessoas": {
-            "type": "integer"
-          },
-          "id_usuario": {
-            "type": "integer"
-          },
-          "reservaObs": {
-            "type": "string",
-            "nullable": true
-          },
-          "reservaPagamento": {
-            "type": "string",
-            "nullable": true
-          },
-          "motivoCancelamento": {
-            "type": "string",
-            "nullable": true
-          },
-          "reservaCheckin": {
-            "type": "string",
-            "nullable": true
-          },
-          "dataNascimento": {
-            "type": "string",
-            "nullable": true
-          },
-          "reservaAmbiente": {
-            "type": "integer",
-            "nullable": true
-          },
-          "status": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "deletedAt": {
-            "type": "string",
-            "nullable": true,
-            "format": "date-time"
-          },
-          "PrmMesa": {
-            "$ref": "#/components/schemas/PrmMesa"
-          },
-          "EveReservaAmbiente": {
-            "$ref": "#/components/schemas/EveReservaAmbiente"
-          }
-        }
-      },
       "GetSpinsResponseItem": {
         "type": "object",
         "properties": {
@@ -2361,117 +1726,6 @@
             "items": {
               "$ref": "#/components/schemas/MesaCenario"
             }
-          }
-        }
-      },
-      "GetUserResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer"
-          },
-          "idCognito": {
-            "type": "string"
-          },
-          "nome": {
-            "type": "string"
-          },
-          "slug": {
-            "type": "string"
-          },
-          "documento": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "celular": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "string"
-          },
-          "data_cadastro": {
-            "type": "string",
-            "nullable": true
-          },
-          "foto": {
-            "type": "string",
-            "nullable": true
-          },
-          "banner": {
-            "type": "string",
-            "nullable": true
-          },
-          "instagram": {
-            "type": "string",
-            "nullable": true
-          },
-          "facebook": {
-            "type": "string",
-            "nullable": true
-          },
-          "comum": {
-            "type": "integer"
-          },
-          "email_validado": {
-            "type": "integer"
-          },
-          "email_validado_oc": {
-            "type": "string",
-            "nullable": true
-          },
-          "sexo": {
-            "type": "string",
-            "nullable": true
-          },
-          "aniversario": {
-            "type": "string",
-            "nullable": true
-          },
-          "fraseWhats": {
-            "type": "string",
-            "nullable": true
-          },
-          "id_cidade": {
-            "type": "string",
-            "nullable": true
-          },
-          "endereco": {
-            "type": "string",
-            "nullable": true
-          },
-          "latitude": {
-            "type": "string",
-            "nullable": true
-          },
-          "longitude": {
-            "type": "string",
-            "nullable": true
-          },
-          "convidado_por": {
-            "type": "string",
-            "nullable": true
-          },
-          "premium_cardapio": {
-            "type": "string",
-            "nullable": true
-          },
-          "premium_delivery": {
-            "type": "string",
-            "nullable": true
-          },
-          "premium_valido": {
-            "type": "string",
-            "nullable": true
-          },
-          "colaborador_parceiro": {
-            "type": "string",
-            "nullable": true
-          },
-          "colaborador_parceiro_oc": {
-            "type": "integer"
           }
         }
       },
