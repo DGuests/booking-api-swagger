@@ -128,7 +128,6 @@
                   "reservaHorario": 7,
                   "reservaMesa": 10,
                   "reservaAmbiente": null,
-                  "reservaQtdPessoas": 7,
                   "reservaOcasiao": "chá de bebe",
                   "reservaRestricaoDieta": [
                     "sem alcool",
@@ -142,6 +141,8 @@
                     "pescetariana",
                     "vegetariana"
                   ],
+                  "reservaQtdPessoas": 7,
+                  "reservaPagamento": 150.00,
                   "updatedAt": "2025-07-07T19:10:23.718Z",
                   "createdAt": "2025-07-07T19:10:23.718Z"
                 }
@@ -1044,6 +1045,73 @@
           }
         }
       }
+    },
+    "/getPayment": {
+      "get": {
+        "summary": "Retrieve a booking's payment information",
+        "tags": ["Payment"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "spin_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the rotation (shift) of the table",
+            "example": "123"
+          },
+          {
+            "in": "query",
+            "name": "qtt",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Booking's people quantity",
+            "example": 5
+          }, 
+          {
+            "in": "query",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the table's group"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment information retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPaymentResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Internal Server Error!!!"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1930,6 +1998,39 @@
             "type": "string",
             "description": "Event description.",
             "example": "Event description"
+          }
+        }
+      },
+      "GetPaymentResponse": {
+        "type": "object",
+        "properties": {
+          "totalPayment": {
+            "type": "number",
+            "format": "float",
+            "description": "Total payment for the booking",
+            "example": 150.00
+          },
+          "totalPeople": {
+            "type": "string",
+            "description": "Number of people in the booking",
+            "example": "3"
+          },
+          "typePayment": {
+            "type": "object",
+            "properties": {
+              "eveReservaPagamento": {
+                "type": "string",
+                "description": "Payment type",
+                "enum": ["p", "m", "n"],
+                "example": "p"
+              },
+              "eveReservaPagPessoa": {
+                "type": "number",
+                "format": "float",
+                "description": "Payment per person",
+                "example": 50.00
+              }
+            }
           }
         }
       }
