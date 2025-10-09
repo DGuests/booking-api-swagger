@@ -142,7 +142,7 @@
                     "vegetariana"
                   ],
                   "reservaQtdPessoas": 7,
-                  "reservaPagamento": 150.00,
+                  "reservaValorCalculado": 150.00,
                   "updatedAt": "2025-07-07T19:10:23.718Z",
                   "createdAt": "2025-07-07T19:10:23.718Z"
                 }
@@ -1159,6 +1159,66 @@
           }
         }
       }
+    },
+    "/updateBooking": {
+      "put": {
+        "summary": "Update a reservation",
+        "tags": ["Booking"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookingBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reservation updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Reservation payment updated successfully"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reservation not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Reservation not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal Server Error!!!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2099,6 +2159,33 @@
           "amount": {
             "type": "number",
             "example": 150.50
+          }
+        }
+      }, 
+      "UpdateBookingBody": {
+        "type": "object",
+        "required": ["status", "booking_id", "id_transition", "amount"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["suceeded", "failed"],
+            "example": "suceeded",
+            "description": "Status of the reservation to be updated"
+          },
+          "booking_id": {
+            "type": "integer",
+            "example": 123,
+            "description": "ID of the reservation to be updated"
+          },
+          "id_transition": {
+            "type": "string",
+            "example": "txn_abc123",
+            "description": "ID of the payment's transaction"
+          },
+          "amount": {
+            "type": "number",
+            "example": 150.50,
+            "description": "Amount of the payment for the reservation"
           }
         }
       }
