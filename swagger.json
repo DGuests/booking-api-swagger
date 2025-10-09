@@ -38,7 +38,7 @@
                   "user": {
                     "id": 1,
                     "nome": "João Silva",
-                    "email": "joao@email.com"
+                    "email": "mata@dguests.com"
                   }
                 }
               }
@@ -1112,6 +1112,53 @@
           }
         }
       }
+    },
+    "/deleteReservation": {
+      "delete": {
+        "summary": "Cancel a reservation",
+        "tags": ["Booking"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the reservation to be canceled"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reservation canceled successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteReservationResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Internal Server Error!!!"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1123,12 +1170,12 @@
           "email": {
             "type": "string",
             "format": "email",
-            "example": "usuario@email.com",
+            "example": "mata@dguests.com",
             "description": "E-mail do usuário para autenticação."
           },
           "senha": {
             "type": "string",
-            "example": "minhasenha123",
+            "example": "g@Ls8D2s",
             "description": "Senha do usuário para autenticação."
           }
         }
@@ -1154,7 +1201,7 @@
               },
               "email": {
                 "type": "string",
-                "example": "joao@email.com"
+                "example": "mata@dguests.com"
               }
             }
           }
@@ -2031,6 +2078,27 @@
                 "example": 50.00
               }
             }
+          }
+        }
+      },
+      "DeleteReservationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Reserva cancelada com sucesso"
+          },
+          "id": {
+            "type": "integer",
+            "example": 123
+          },
+          "id_payment": {
+            "type": "integer",
+            "example": 456
+          },
+          "amount": {
+            "type": "number",
+            "example": 150.50
           }
         }
       }
