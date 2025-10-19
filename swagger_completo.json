@@ -1625,6 +1625,190 @@
           }
         }
       }
+    },
+    "/createWaitlistEntry": {
+      "post": {
+        "summary": "Adiciona uma nova entrada na fila de espera",
+        "tags": ["Queue"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWaitlistEntryBody"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            },
+            "description": "Authentication JWT token in Bearer format."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entrada criada com sucesso na fila de espera",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateWaitlistEntryResponse"
+                },
+                "example": {
+                  "id": 456,
+                  "id_usuario": 1,
+                  "id_esperaConfig": 3,
+                  "capacidade": 4,
+                  "nome": "João Silva",
+                  "telefone": "+5511999999999",
+                  "email": "joao@email.com",
+                  "observacao": "Preferência por janela",
+                  "status": "a",
+                  "necessidadeEspecial": false,
+                  "dataNascimento": null,
+                  "id_esperaGrupo": null,
+                  "id_setor": 5,
+                  "prioridade": false,
+                  "dataReserva": "2025-10-19T00:00:00.000Z",
+                  "createdAt": "2025-10-19T11:00:00.000Z",
+                  "updatedAt": "2025-10-19T11:00:00.000Z",
+                  "posicaoFila": 3,
+                  "totalNaFila": 8
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Fila de espera online não está ativa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Fila de espera online não está ativa"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Evento ou configuração não encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "evento": {
+                    "value": {
+                      "message": "Nenhum evento encontrado"
+                    }
+                  },
+                  "config": {
+                    "value": {
+                      "message": "Configuração de fila de espera não encontrada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Entrada já existe na fila para esta data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Você já está na fila de espera para esta data"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Dados de entrada inválidos ou campos obrigatórios ausentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "missingField": {
+                    "value": {
+                      "message": "Required field missing: nome"
+                    }
+                  },
+                  "invalidPhone": {
+                    "value": {
+                      "message": "phone must be in format +0000000000000 (country code + area code + number)"
+                    }
+                  },
+                  "invalidEmail": {
+                    "value": {
+                      "message": "email must be a valid email address"
+                    }
+                  },
+                  "invalidCapacity": {
+                    "value": {
+                      "message": "capacity must be a valid number greater than 0"
+                    }
+                  },
+                  "exceedsLimit": {
+                    "value": {
+                      "message": "Quantidade de pessoas excede o limite por mesa (máximo: 5)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown internal error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Internal Server Error!!!"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2792,6 +2976,177 @@
           "totalNaFila": {
             "type": "integer",
             "description": "Total de itens ativos na fila para o mesmo dia"
+          }
+        }
+      },
+      "CreateWaitlistEntryBody": {
+        "type": "object",
+        "required": ["nome", "telefone", "capacidade"],
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "João Silva",
+            "description": "Nome do cliente. Obrigatório."
+          },
+          "telefone": {
+            "type": "string",
+            "example": "+5511999999999",
+            "description": "Telefone no formato +código_país+DDD+número (ex: +5511999999999). Obrigatório."
+          },
+          "capacidade": {
+            "type": "integer",
+            "example": 4,
+            "description": "Número de pessoas. Obrigatório."
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "joao@email.com",
+            "description": "E-mail do cliente. Opcional."
+          },
+          "eventoId": {
+            "type": "integer",
+            "example": 6,
+            "description": "ID do evento. Opcional."
+          },
+          "userId": {
+            "type": "integer",
+            "example": 1,
+            "description": "ID do usuário/restaurante. Opcional."
+          },
+          "configId": {
+            "type": "integer",
+            "example": 3,
+            "description": "ID da configuração da fila de espera. Opcional."
+          },
+          "observacao": {
+            "type": "string",
+            "example": "Preferência por janela",
+            "description": "Observações adicionais. Opcional."
+          },
+          "necessidadeEspecial": {
+            "type": "boolean",
+            "example": false,
+            "description": "Se possui necessidade especial. Opcional."
+          },
+          "dataNascimento": {
+            "type": "string",
+            "format": "date",
+            "example": "1990-05-15",
+            "description": "Data de nascimento do cliente. Opcional."
+          },
+          "grupoId": {
+            "type": "integer",
+            "example": 4,
+            "description": "ID do grupo da fila de espera. Opcional."
+          },
+          "setorId": {
+            "type": "integer",
+            "example": 5,
+            "description": "ID do setor. Opcional."
+          },
+          "prioridade": {
+            "type": "boolean",
+            "example": false,
+            "description": "Se possui prioridade na fila. Opcional."
+          },
+          "dataReserva": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-10-19T00:00:00.000Z",
+            "description": "Data da reserva desejada. Opcional (padrão: data atual)."
+          }
+        }
+      },
+      "CreateWaitlistEntryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID da entrada na fila de espera"
+          },
+          "id_usuario": {
+            "type": "integer",
+            "description": "ID do usuário/restaurante"
+          },
+          "id_esperaConfig": {
+            "type": "integer",
+            "description": "ID da configuração da fila de espera"
+          },
+          "capacidade": {
+            "type": "integer",
+            "description": "Número de pessoas"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do cliente"
+          },
+          "telefone": {
+            "type": "string",
+            "description": "Telefone do cliente"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "description": "E-mail do cliente"
+          },
+          "observacao": {
+            "type": "string",
+            "nullable": true,
+            "description": "Observações adicionais"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status na fila (a=ativo, c=chamado, f=finalizado)"
+          },
+          "necessidadeEspecial": {
+            "type": "boolean",
+            "description": "Se possui necessidade especial"
+          },
+          "dataNascimento": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "Data de nascimento"
+          },
+          "id_esperaGrupo": {
+            "type": "integer",
+            "nullable": true,
+            "description": "ID do grupo"
+          },
+          "id_setor": {
+            "type": "integer",
+            "nullable": true,
+            "description": "ID do setor"
+          },
+          "prioridade": {
+            "type": "boolean",
+            "description": "Se possui prioridade"
+          },
+          "dataReserva": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data da reserva"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data da última atualização"
+          },
+          "posicaoFila": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Posição atual na fila"
+          },
+          "totalNaFila": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Total de pessoas na fila"
           }
         }
       }
