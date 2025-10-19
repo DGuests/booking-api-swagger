@@ -1809,6 +1809,136 @@
           }
         }
       }
+    },
+    "/cancelWaitQueueEntry/{id}": {
+      "delete": {
+        "summary": "Cancela uma entrada na fila de espera",
+        "tags": ["Queue"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 123
+            },
+            "description": "ID da entrada na fila de espera. Obrigatório."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            },
+            "description": "Authentication JWT token in Bearer format."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entrada na fila de espera cancelada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelWaitQueueEntryResponse"
+                },
+                "example": {
+                  "message": "Entrada na fila de espera cancelada com sucesso",
+                  "id": 123,
+                  "status": "x",
+                  "nome": "João Silva",
+                  "telefone": "+5511999999999",
+                  "capacidade": 4,
+                  "canceladoEm": "2025-10-19T12:30:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID não fornecido ou status inválido para cancelamento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "missingId": {
+                    "value": {
+                      "message": "ID da entrada na fila é obrigatório"
+                    }
+                  },
+                  "invalidStatus": {
+                    "value": {
+                      "message": "Apenas entradas na fila de espera ou chamadas podem ser canceladas"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Entrada na fila de espera não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Entrada na fila de espera não encontrada"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Entrada já foi cancelada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Esta entrada já foi cancelada"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unknown internal error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3147,6 +3277,40 @@
             "type": "integer",
             "nullable": true,
             "description": "Total de pessoas na fila"
+          }
+        }
+      },
+      "CancelWaitQueueEntryResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Mensagem de confirmação do cancelamento"
+          },
+          "id": {
+            "type": "integer",
+            "description": "ID da entrada cancelada"
+          },
+          "status": {
+            "type": "string",
+            "description": "Novo status (x=cancelado)"
+          },
+          "nome": {
+            "type": "string",
+            "description": "Nome do cliente"
+          },
+          "telefone": {
+            "type": "string",
+            "description": "Telefone do cliente"
+          },
+          "capacidade": {
+            "type": "integer",
+            "description": "Número de pessoas"
+          },
+          "canceladoEm": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data e hora do cancelamento"
           }
         }
       }
