@@ -1626,7 +1626,7 @@
         }
       }
     },
-    "/createWaitlistEntry": {
+    "/insertWaitlist": {
       "post": {
         "summary": "Adiciona uma nova entrada na fila de espera",
         "tags": ["Queue"],
@@ -1635,7 +1635,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateWaitlistEntryBody"
+                "$ref": "#/components/schemas/InsertWaitlistBody"
               }
             }
           }
@@ -1658,7 +1658,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateWaitlistEntryResponse"
+                  "$ref": "#/components/schemas/InsertWaitlistResponse"
                 },
                 "example": {
                   "id": 456,
@@ -1810,7 +1810,7 @@
         }
       }
     },
-    "/cancelWaitQueueEntry/{id}": {
+    "/cancelWaitlist/{id}": {
       "delete": {
         "summary": "Cancela uma entrada na fila de espera",
         "tags": ["Queue"],
@@ -1842,7 +1842,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CancelWaitQueueEntryResponse"
+                  "$ref": "#/components/schemas/CancelWaitlistResponse"
                 },
                 "example": {
                   "message": "Entrada na fila de espera cancelada com sucesso",
@@ -3109,7 +3109,7 @@
           }
         }
       },
-      "CreateWaitlistEntryBody": {
+      "InsertWaitlistBody": {
         "type": "object",
         "required": ["nome", "telefone", "capacidade"],
         "properties": {
@@ -3188,7 +3188,7 @@
           }
         }
       },
-      "CreateWaitlistEntryResponse": {
+      "InsertWaitlistResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -3280,7 +3280,7 @@
           }
         }
       },
-      "CancelWaitQueueEntryResponse": {
+      "CancelWaitlistResponse": {
         "type": "object",
         "properties": {
           "message": {

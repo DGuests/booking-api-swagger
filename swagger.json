@@ -142,7 +142,7 @@
                     "vegetariana"
                   ],
                   "reservaQtdPessoas": 7,
-                  "reservaValorCalculado": 150.00,
+                  "reservaValorCalculado": 150.0,
                   "updatedAt": "2025-07-07T19:10:23.718Z",
                   "createdAt": "2025-07-07T19:10:23.718Z"
                 }
@@ -1070,7 +1070,7 @@
             },
             "description": "Booking's people quantity",
             "example": 5
-          }, 
+          },
           {
             "in": "query",
             "name": "group_id",
@@ -1306,7 +1306,7 @@
         }
       }
     },
-    "/createWaitlistEntry": {
+    "/insertWaitlist": {
       "post": {
         "summary": "Adiciona uma nova entrada na fila de espera",
         "tags": ["Queue"],
@@ -1315,7 +1315,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateWaitlistEntryBody"
+                "$ref": "#/components/schemas/InsertWaitlistBody"
               }
             }
           }
@@ -1338,7 +1338,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateWaitlistEntryResponse"
+                  "$ref": "#/components/schemas/InsertWaitlistResponse"
                 },
                 "example": {
                   "id": 456,
@@ -1490,7 +1490,7 @@
         }
       }
     },
-    "/cancelWaitQueueEntry/{id}": {
+    "/cancelWaitlist/{id}": {
       "delete": {
         "summary": "Cancela uma entrada na fila de espera",
         "tags": ["Queue"],
@@ -1522,7 +1522,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CancelWaitQueueEntryResponse"
+                  "$ref": "#/components/schemas/CancelWaitlistResponse"
                 },
                 "example": {
                   "message": "Entrada na fila de espera cancelada com sucesso",
@@ -1809,7 +1809,7 @@
         "properties": {
           "reservaAtiva": {
             "type": "boolean",
-            "example": true,           
+            "example": true,
             "description": "Reservation activation status."
           },
           "id": {
@@ -2515,7 +2515,7 @@
             "type": "number",
             "format": "float",
             "description": "Total payment for the booking",
-            "example": 150.00
+            "example": 150.0
           },
           "totalPeople": {
             "type": "string",
@@ -2535,7 +2535,7 @@
                 "type": "number",
                 "format": "float",
                 "description": "Payment per person",
-                "example": 50.00
+                "example": 50.0
               }
             }
           }
@@ -2558,10 +2558,10 @@
           },
           "amount": {
             "type": "number",
-            "example": 150.50
+            "example": 150.5
           }
         }
-      }, 
+      },
       "UpdateBookingBody": {
         "type": "object",
         "required": ["status", "booking_id", "id_transition", "amount"],
@@ -2584,7 +2584,7 @@
           },
           "amount": {
             "type": "number",
-            "example": 150.50,
+            "example": 150.5,
             "description": "Amount of the payment for the reservation"
           }
         }
@@ -2630,7 +2630,7 @@
           }
         }
       },
-      "CreateWaitlistEntryBody": {
+      "InsertWaitlistBody": {
         "type": "object",
         "required": ["nome", "telefone", "capacidade"],
         "properties": {
@@ -2709,7 +2709,7 @@
           }
         }
       },
-      "CreateWaitlistEntryResponse": {
+      "InsertWaitlistResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -2801,7 +2801,7 @@
           }
         }
       },
-      "CancelWaitQueueEntryResponse": {
+      "CancelWaitlistResponse": {
         "type": "object",
         "properties": {
           "message": {
