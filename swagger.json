@@ -338,7 +338,7 @@
               "type": "string"
             },
             "description": "Restaurant ID to filter events.",
-            "example": "123"
+            "example": "1"
           },
           {
             "in": "header",
@@ -492,7 +492,8 @@
             "name": "restaurant_id",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "example": 1
             },
             "description": "ID do restautante"
           },
@@ -619,7 +620,8 @@
             "name": "restaurant_id",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "example": 1
             },
             "description": "Restaurant ID"
           },
@@ -766,7 +768,8 @@
             "name": "restaurant_id",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "example": 1
             },
             "description": "restaurant ID"
           },
@@ -932,7 +935,8 @@
             "name": "restaurant_id",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "example": 1
             }
           },
           {
@@ -1231,7 +1235,7 @@
             "required": true,
             "schema": {
               "type": "integer",
-              "example": 123
+              "example": 70
             },
             "description": "ID do item na fila de espera. Obrigatório."
           },
@@ -1501,7 +1505,7 @@
             "required": true,
             "schema": {
               "type": "integer",
-              "example": 123
+              "example": 70
             },
             "description": "ID da entrada na fila de espera. Obrigatório."
           },
@@ -2494,7 +2498,7 @@
           "eveUsuario": {
             "type": "string",
             "description": "User ID.",
-            "example": "123"
+            "example": "1"
           },
           "eveTitulo": {
             "type": "string",
@@ -2662,7 +2666,7 @@
           },
           "configId": {
             "type": "integer",
-            "example": 3,
+            "example": 1,
             "description": "ID da configuração da fila de espera. Opcional."
           },
           "observacao": {
