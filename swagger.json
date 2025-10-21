@@ -2655,11 +2655,6 @@
             "example": "joao@email.com",
             "description": "E-mail do cliente. Opcional."
           },
-          "eventoId": {
-            "type": "integer",
-            "example": 6,
-            "description": "ID do evento. Opcional."
-          },
           "userId": {
             "type": "integer",
             "example": 1,
