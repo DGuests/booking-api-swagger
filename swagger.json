@@ -1733,7 +1733,7 @@
           },
           "eventoId": {
             "type": "integer",
-            "example": 1,
+            "example": 190711,
             "description": "EventID."
           },
           "reservaMesa": {
@@ -1787,7 +1787,7 @@
               "tipo": "cenario",
               "userId": 1,
               "giroId": "7",
-              "eventoId": "6",
+              "eventoId": "190711",
               "reservaMesa": "4"
             }
           },
@@ -1802,7 +1802,7 @@
               "tipo": "ambiente",
               "userId": 1,
               "giroId": "6",
-              "eventoId": "7",
+              "eventoId": "190711",
               "reservaAmbiente": "4"
             }
           }
