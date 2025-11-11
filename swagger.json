@@ -1118,7 +1118,7 @@
       }
     },
     "/deleteReservation": {
-      "delete": {
+      "put": {
         "summary": "Cancel a reservation",
         "tags": ["Booking"],
         "parameters": [
