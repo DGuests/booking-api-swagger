@@ -1623,6 +1623,154 @@
           }
         }
       }
+    },
+    "/getReservationById": {
+      "get": {
+        "summary": "Busca reservas por ID ou email",
+        "tags": ["Booking"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "reservaId",
+            "schema": {
+              "type": "integer",
+              "example": 123
+            },
+            "description": "ID da reserva. Deve fornecer reservaId ou email."
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "schema": {
+              "type": "string",
+              "example": "cliente@email.com"
+            },
+            "description": "Email da reserva. Deve fornecer reservaId ou email."
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer <token>"
+            },
+            "description": "Token JWT de autenticação no formato Bearer."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reserva(s) encontrada(s) com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetReservationByIdResponseItem"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 123,
+                    "reservaMesa": 5,
+                    "id_evento": 10,
+                    "nome": "João Silva",
+                    "reservaAtiva": true,
+                    "reservaHora": "19:00:00",
+                    "reservaEmail": "joao@email.com",
+                    "telefone": "+5511999999999",
+                    "documento": "123.456.789-00",
+                    "reservaPagamento": "p",
+                    "reservaObs": "Aniversário",
+                    "reservaOcasiao": "comemoração",
+                    "reservaRestricaoDieta": ["vegetariana"],
+                    "dataNascimento": "1990-01-15",
+                    "status": "confirmada",
+                    "PrmMesa": {
+                      "id": 5,
+                      "nome": "Mesa A",
+                      "id_cenario": 1,
+                      "id_grupo": 2,
+                      "numero": 5,
+                      "capacidadeMin": 2,
+                      "capacidadeMax": 4
+                    },
+                    "EveReservaAmbiente": {
+                      "id": 3,
+                      "id_giro": 8,
+                      "nome": "Salão Principal",
+                      "limiteReservas": 10,
+                      "limitePessoas": 50,
+                      "limitePessoasReserva": 8,
+                      "minimoPessoasReserva": 2
+                    },
+                    "EveEvento": {
+                      "id": 10,
+                      "eveDataEvento": "2025-12-20T19:00:00.000Z",
+                      "eveTitulo": "Jantar Especial",
+                      "eveDescricao": "Evento especial de fim de ano"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro obrigatório ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "É necessário fornecer reservaId ou email como parâmetro"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Nenhuma reserva encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Nenhuma reserva encontrada"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Internal Server Error!!!"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2831,6 +2979,94 @@
             "type": "string",
             "format": "date-time",
             "description": "Data e hora do cancelamento"
+          }
+        }
+      },
+      "EveEvento": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "eveDataEvento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eveTitulo": {
+            "type": "string"
+          },
+          "eveDescricao": {
+            "type": "string"
+          }
+        }
+      },
+      "GetReservationByIdResponseItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "reservaMesa": {
+            "type": "integer",
+            "nullable": true
+          },
+          "id_evento": {
+            "type": "integer"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "reservaAtiva": {
+            "type": "boolean"
+          },
+          "reservaHora": {
+            "type": "string"
+          },
+          "reservaEmail": {
+            "type": "string"
+          },
+          "telefone": {
+            "type": "string"
+          },
+          "documento": {
+            "type": "string",
+            "nullable": true
+          },
+          "reservaPagamento": {
+            "type": "string",
+            "nullable": true
+          },
+          "reservaObs": {
+            "type": "string",
+            "nullable": true
+          },
+          "reservaOcasiao": {
+            "type": "string",
+            "nullable": true
+          },
+          "reservaRestricaoDieta": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "dataNascimento": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "PrmMesa": {
+            "$ref": "#/components/schemas/PrmMesa"
+          },
+          "EveReservaAmbiente": {
+            "$ref": "#/components/schemas/EveReservaAmbiente"
+          },
+          "EveEvento": {
+            "$ref": "#/components/schemas/EveEvento"
           }
         }
       }
