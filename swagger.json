@@ -2657,6 +2657,18 @@
             "type": "string",
             "description": "Event description.",
             "example": "Event description"
+          },
+          "eveReservaPagamento": {
+            "type": "string",
+            "description": "Tipo de cálculo do pagamento da reserva. 'p' = valor multiplicado por pessoa (o valor em eveReservaPagPessoa será multiplicado pela quantidade de pessoas); 'm' = valor único por mesa (o valor em eveReservaPagPessoa é fixo independente da quantidade de pessoas).",
+            "enum": ["p", "m"],
+            "example": "p"
+          },
+          "eveReservaPagPessoa": {
+            "type": "number",
+            "format": "float",
+            "description": "Valor base para pagamento da reserva. Se eveReservaPagamento for 'p', este valor será multiplicado pela quantidade de pessoas. Se eveReservaPagamento for 'm', este será o valor fixo total da mesa.",
+            "example": 50.0
           }
         }
       },
