@@ -1771,6 +1771,289 @@
           }
         }
       }
+    },
+    "/getReservationsByPeriod": {
+      "get": {
+        "summary": "Consulta as reservas de um estabelecimento em um período",
+        "description": "Consulta as reservas do estabelecimento autenticado, filtradas pelo\nperíodo informado (data_inicio e data_fim), considerando a data do evento.\n\nAutenticação: Authorization: Bearer <accessToken>.\n\nFormato: JSON contendo a lista de reservas (reservations),\ninformações de paginação (pagination) e período consultado (period).\n\nPaginação: 100 reservas por página, com limite máximo de 500.\nOs resultados são ordenados pela data do evento e ID da reserva,\nem ordem crescente.\n",
+        "tags": ["Info"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "data_inicio",
+            "required": true,
+            "description": "Data inicial do evento, inclusiva.",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2026-10-01"
+            }
+          },
+          {
+            "in": "query",
+            "name": "data_fim",
+            "required": true,
+            "description": "Data final do evento, inclusiva.",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2026-10-31"
+            }
+          },
+          {
+            "in": "query",
+            "name": "restaurant_id",
+            "required": false,
+            "description": "Se informado, deve corresponder ao ID do estabelecimento autenticado.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "example": 24
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Número da página, começando em 1.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Quantidade máxima de reservas por página.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500,
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "includeTotal",
+            "description": "Se false, retorna total e totalPages como null.",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de reservas em JSON, com paginação e período consultado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["reservations", "pagination", "period"],
+                  "properties": {
+                    "reservations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "email": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "birthDate": {
+                            "type": "string",
+                            "format": "date",
+                            "nullable": true
+                          },
+                          "cpf": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "tableName": {
+                            "type": "string"
+                          },
+                          "environment": {
+                            "type": "string"
+                          },
+                          "people": {
+                            "type": "integer"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "nullable": true,
+                            "example": "2026-10-10 09:30:00"
+                          },
+                          "eventDate": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "checkinAt": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "example": 100
+                        },
+                        "total": {
+                          "type": "integer",
+                          "nullable": true,
+                          "example": 230
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "nullable": true,
+                          "example": 3
+                        }
+                      }
+                    },
+                    "period": {
+                      "type": "object",
+                      "properties": {
+                        "startDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "2026-10-01"
+                        },
+                        "endDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "2026-10-31"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": ["eventDate"]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Datas ou parâmetros de paginação inválidos."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          },
+          "403": {
+            "description": "Acesso não autorizado ao estabelecimento."
+          },
+          "500": {
+            "description": "Erro interno ao consultar reservas."
+          }
+        }
+      }
+    },
+    "/exportReservationsByPeriod": {
+      "get": {
+        "summary": "Exporta reservas por período em arquivo CSV",
+        "description": "Exporta as reservas do estabelecimento autenticado, filtradas pelo\nperíodo informado (data_inicio e data_fim), considerando a data do evento.\n\nAutenticação: Authorization: Bearer <accessToken>.\n\nFormato: arquivo CSV em UTF-8 com BOM, separado por ponto e vírgula (;),\ncompatível com Excel.\n\nLimites: até 50.000 reservas ou 3 MiB por arquivo.\nCaso algum limite seja excedido, retorna HTTP 413.\n",
+        "tags": ["Info"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "data_inicio",
+            "required": true,
+            "description": "Data inicial do período (YYYY-MM-DD).",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2026-10-01"
+            }
+          },
+          {
+            "in": "query",
+            "name": "data_fim",
+            "required": true,
+            "description": "Data final do período (YYYY-MM-DD).",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2026-10-31"
+            }
+          },
+          {
+            "in": "query",
+            "name": "restaurant_id",
+            "required": false,
+            "description": "Se informado, deve corresponder ao ID do estabelecimento autenticado.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Arquivo CSV para download.",
+            "headers": {
+              "Content-Disposition": {
+                "description": "Nome do arquivo disponibilizado para download.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetros ou período inválidos."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          },
+          "403": {
+            "description": "Acesso não autorizado ao estabelecimento."
+          },
+          "413": {
+            "description": "Limite de registros ou tamanho do arquivo excedido."
+          },
+          "500": {
+            "description": "Erro interno ao exportar as reservas."
+          },
+          "503": {
+            "description": "Tempo de processamento insuficiente para concluir a exportação."
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2657,18 +2940,6 @@
             "type": "string",
             "description": "Event description.",
             "example": "Event description"
-          },
-          "eveReservaPagamento": {
-            "type": "string",
-            "description": "Tipo de cálculo do pagamento da reserva. 'p' = valor multiplicado por pessoa (o valor em eveReservaPagPessoa será multiplicado pela quantidade de pessoas); 'm' = valor único por mesa (o valor em eveReservaPagPessoa é fixo independente da quantidade de pessoas).",
-            "enum": ["p", "m"],
-            "example": "p"
-          },
-          "eveReservaPagPessoa": {
-            "type": "number",
-            "format": "float",
-            "description": "Valor base para pagamento da reserva. Se eveReservaPagamento for 'p', este valor será multiplicado pela quantidade de pessoas. Se eveReservaPagamento for 'm', este será o valor fixo total da mesa.",
-            "example": 50.0
           }
         }
       },
